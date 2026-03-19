@@ -12,9 +12,8 @@ from flask import Flask, request, jsonify, render_template_string
 app = Flask(__name__)
 
 # Use OpenAI API
-client = OpenAI(
-    api_key=os.getenv("OPENAI_API_KEY", "")
-)
+api_key = os.getenv("OPENAI_API_KEY") or os.getenv("openai_api_key") or ""
+client = OpenAI(api_key=api_key)
 
 # Simple HTML template
 HTML_TEMPLATE = """
