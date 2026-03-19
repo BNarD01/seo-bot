@@ -11,10 +11,9 @@ from flask import Flask, request, jsonify, render_template_string
 # Initialize
 app = Flask(__name__)
 
-# Use Kimi API (more stable)
+# Use OpenAI API
 client = OpenAI(
-    api_key=os.getenv("KIMI_API_KEY", ""),
-    base_url="https://api.moonshot.cn/v1"
+    api_key=os.getenv("OPENAI_API_KEY", "")
 )
 
 # Simple HTML template
@@ -134,7 +133,7 @@ KEYWORDS: [comma-separated keywords]
     
     try:
         response = client.chat.completions.create(
-            model="moonshot-v1-8k",
+            model="gpt-4o-mini",
             messages=[{"role": "user", "content": prompt}],
             temperature=0.7,
             max_tokens=4000
