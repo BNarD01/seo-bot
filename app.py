@@ -14,7 +14,7 @@ openai_api_key = os.getenv("OPENAI_API_KEY", "")
 stripe_api_key = os.getenv("STRIPE_API_KEY", "")
 
 client = OpenAI(api_key=openai_api_key) if openai_api_key else None
-stripe.api_key = stripe_api_key
+stripe.api_key = stripe_api_key.strip() if stripe_api_key else ""
 
 # HTML Template
 HTML_TEMPLATE = """
