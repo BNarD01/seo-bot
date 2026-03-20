@@ -5,9 +5,11 @@ from datetime import datetime
 from openai import OpenAI
 from flask import Flask, request, jsonify, render_template_string, redirect
 import stripe
+from keyword_research import keyword_bp
 
 # Initialize
 app = Flask(__name__)
+app.register_blueprint(keyword_bp, url_prefix='/keyword')
 
 # API Keys
 openai_api_key = os.getenv("OPENAI_API_KEY", "")
@@ -64,6 +66,8 @@ HTML_TEMPLATE = """
             <button onclick="window.location.href='/checkout?plan=enterprise'">Contact Us</button>
         </div>
     </div>
+    
+    <h2 style="text-align: center; margin-top: 40px;"><a href="/keyword" style="color: #007bff;">Try Keyword Research Tool</a></h2>
     
     <h2 style="text-align: center; margin-top: 40px;">Try Free - Generate Article</h2>
     <form id="generateForm">
