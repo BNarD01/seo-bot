@@ -20,12 +20,26 @@ stripe_api_key = os.getenv("STRIPE_API_KEY", "")
 client = OpenAI(api_key=openai_api_key) if openai_api_key else None
 stripe.api_key = stripe_api_key.strip() if stripe_api_key else ""
 
+# Google Tag for Ads tracking
+GOOGLE_TAG = """
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=AW-18029847499"></script>
+<script>
+ window.dataLayer = window.dataLayer || [];
+ function gtag(){dataLayer.push(arguments);}
+ gtag('js', new Date());
+ gtag('config', 'AW-18029847499');
+</script>
+"""
+
 # HTML Template
 HTML_TEMPLATE = """
 <!DOCTYPE html>
 <html>
 <head>
     <title>SEO Bot - AI Article Generator</title>
+    """ + GOOGLE_TAG + """
+    <style>
     <style>
         body { font-family: Arial, sans-serif; max-width: 900px; margin: 50px auto; padding: 20px; background: #f5f5f5; }
         h1 { color: #333; text-align: center; }
