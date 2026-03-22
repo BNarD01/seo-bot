@@ -90,7 +90,7 @@ HTML_TEMPLATE = """
     <form id="generateForm">
         <div class="form-group">
             <label>Keyword / Topic:</label>
-            <input type="text" id="keyword" placeholder="e.g., best coffee maker 2024" required>
+            <input type="text" id="keyword" placeholder="e.g., best coffee maker 2025" required>
         </div>
         <div class="form-group">
             <label>Article Length:</label>
