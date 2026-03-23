@@ -2,3 +2,5 @@ flask
 openai
 gunicorn
 stripe
+beautifulsoup4
+requests
