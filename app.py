@@ -289,49 +289,281 @@ AI_TOOLS_TEMPLATE = '''
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>AI Export Hub - Cross-border E-commerce AI Tools</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Export Hub - Cross-border E-commerce AI Tools Directory</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
-        body { font-family: Arial, sans-serif; max-width: 1200px; margin: 0 auto; padding: 20px; background: #f5f7fa; }
-        .header { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 40px; text-align: center; border-radius: 10px; margin-bottom: 30px; }
-        .header h1 { margin: 0; font-size: 2.5em; }
-        .stats { display: flex; justify-content: center; gap: 40px; margin-top: 20px; }
-        .stat { text-align: center; }
-        .stat-number { font-size: 2em; font-weight: bold; }
-        .tools-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 20px; }
-        .tool-card { background: white; padding: 20px; border-radius: 10px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); text-decoration: none; color: inherit; }
-        .tool-card:hover { transform: translateY(-3px); box-shadow: 0 5px 15px rgba(0,0,0,0.15); }
-        .tool-name { font-size: 1.3em; font-weight: bold; color: #333; margin-bottom: 10px; }
-        .tool-category { background: #f0f0f0; padding: 5px 10px; border-radius: 15px; font-size: 0.8em; color: #666; }
-        .tool-description { color: #666; margin: 10px 0; }
-        .tool-price { color: #667eea; font-weight: bold; }
-        .nav { text-align: center; margin-bottom: 20px; }
-        .nav a { margin: 0 10px; color: #667eea; text-decoration: none; }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { 
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif; 
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            color: #333;
+        }
+        .container { max-width: 1400px; margin: 0 auto; padding: 40px 20px; }
+        .nav { 
+            background: rgba(255,255,255,0.1); 
+            backdrop-filter: blur(10px);
+            padding: 15px 30px; 
+            border-radius: 50px; 
+            display: inline-block; 
+            margin-bottom: 30px;
+        }
+        .nav a { 
+            color: white; 
+            text-decoration: none; 
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .nav a:hover { opacity: 0.8; }
+        .header { 
+            text-align: center; 
+            color: white; 
+            padding: 60px 20px;
+        }
+        .header h1 { 
+            font-size: 4em; 
+            font-weight: 700; 
+            margin-bottom: 20px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+        }
+        .header p { 
+            font-size: 1.3em; 
+            opacity: 0.9; 
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        .stats { 
+            display: flex; 
+            justify-content: center; 
+            gap: 60px; 
+            margin-top: 40px;
+        }
+        .stat { 
+            background: rgba(255,255,255,0.15);
+            backdrop-filter: blur(10px);
+            padding: 25px 40px;
+            border-radius: 20px;
+            text-align: center;
+            border: 1px solid rgba(255,255,255,0.2);
+        }
+        .stat-number { 
+            font-size: 3em; 
+            font-weight: 700; 
+            display: block;
+        }
+        .stat-label { 
+            font-size: 1em; 
+            opacity: 0.9;
+            margin-top: 5px;
+        }
+        .content { 
+            background: white; 
+            border-radius: 30px; 
+            padding: 50px;
+            margin-top: 40px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+        }
+        .section-title {
+            font-size: 2em;
+            font-weight: 700;
+            margin-bottom: 30px;
+            color: #333;
+        }
+        .tools-grid { 
+            display: grid; 
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr)); 
+            gap: 25px; 
+        }
+        .tool-card { 
+            background: linear-gradient(145deg, #ffffff 0%, #f8f9ff 100%);
+            padding: 30px; 
+            border-radius: 20px; 
+            box-shadow: 0 4px 15px rgba(102,126,234,0.1);
+            text-decoration: none; 
+            color: inherit; 
+            transition: all 0.3s ease;
+            border: 1px solid rgba(102,126,234,0.1);
+            position: relative;
+            overflow: hidden;
+        }
+        .tool-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+            transform: scaleX(0);
+            transition: transform 0.3s ease;
+        }
+        .tool-card:hover { 
+            transform: translateY(-8px); 
+            box-shadow: 0 20px 40px rgba(102,126,234,0.2);
+        }
+        .tool-card:hover::before {
+            transform: scaleX(1);
+        }
+        .tool-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 15px;
+        }
+        .tool-name { 
+            font-size: 1.4em; 
+            font-weight: 700; 
+            color: #333;
+            flex: 1;
+        }
+        .tool-category { 
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 6px 14px; 
+            border-radius: 20px; 
+            font-size: 0.75em; 
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        .tool-description { 
+            color: #666; 
+            margin: 15px 0;
+            line-height: 1.6;
+            font-size: 0.95em;
+        }
+        .tool-features {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin: 15px 0;
+        }
+        .feature-tag {
+            background: #f0f4ff;
+            color: #667eea;
+            padding: 4px 12px;
+            border-radius: 15px;
+            font-size: 0.8em;
+            font-weight: 500;
+        }
+        .tool-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 20px;
+            padding-top: 15px;
+            border-top: 1px solid #eee;
+        }
+        .tool-price { 
+            font-size: 1.2em;
+            font-weight: 700;
+            color: #667eea;
+        }
+        .tool-rating {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            color: #ffa500;
+            font-weight: 600;
+        }
+        .cta-section {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 60px;
+            border-radius: 20px;
+            text-align: center;
+            margin-top: 50px;
+        }
+        .cta-section h2 {
+            font-size: 2.5em;
+            margin-bottom: 15px;
+        }
+        .cta-section p {
+            font-size: 1.2em;
+            opacity: 0.9;
+            margin-bottom: 30px;
+        }
+        .cta-button {
+            display: inline-block;
+            background: white;
+            color: #667eea;
+            padding: 18px 50px;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 1.1em;
+            transition: all 0.3s ease;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+        .cta-button:hover {
+            transform: scale(1.05);
+            box-shadow: 0 15px 40px rgba(0,0,0,0.3);
+        }
+        @media (max-width: 768px) {
+            .header h1 { font-size: 2.5em; }
+            .stats { flex-direction: column; gap: 20px; }
+            .tools-grid { grid-template-columns: 1fr; }
+            .content { padding: 30px 20px; }
+        }
     </style>
 </head>
 <body>
-    <div class="header">
-        <h1>AI Export Hub</h1>
-        <p>AI-powered tools for cross-border e-commerce</p>
-        <div class="stats">
-            <div class="stat"><div class="stat-number">{{ total_tools }}</div><div>AI Tools</div></div>
-            <div class="stat"><div class="stat-number">{{ categories|length }}</div><div>Categories</div></div>
+    <div class="container">
+        <div class="nav">
+            <a href="/">← Back to SEO Bot</a>
         </div>
-    </div>
-    <div class="nav">
-        <a href="/">← Back to SEO Bot</a>
-    </div>
-    <div class="tools-grid">
-        {% for tool in tools %}
-        <a href="/ai-tools/tool/{{ tool.id }}" class="tool-card">
-            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">
-                <span class="tool-name">{{ tool.name }}</span>
-                <span class="tool-category">{{ tool.category }}</span>
+        
+        <div class="header">
+            <h1>AI Export Hub</h1>
+            <p>Discover AI-powered tools to scale your cross-border e-commerce business globally</p>
+            <div class="stats">
+                <div class="stat">
+                    <span class="stat-number">{{ total_tools }}</span>
+                    <span class="stat-label">AI Tools</span>
+                </div>
+                <div class="stat">
+                    <span class="stat-number">{{ categories|length }}</span>
+                    <span class="stat-label">Categories</span>
+                </div>
+                <div class="stat">
+                    <span class="stat-number">1000+</span>
+                    <span class="stat-label">Active Users</span>
+                </div>
             </div>
-            <div class="tool-description">{{ tool.description }}</div>
-            <div class="tool-price">{{ tool.price }}</div>
-            <div style="margin-top:10px;color:#ffa500;">⭐ {{ tool.rating }} ({{ tool.reviews }})</div>
-        </a>
-        {% endfor %}
+        </div>
+        
+        <div class="content">
+            <h2 class="section-title">Featured AI Tools</h2>
+            <div class="tools-grid">
+                {% for tool in tools %}
+                <a href="/ai-tools/tool/{{ tool.id }}" class="tool-card">
+                    <div class="tool-header">
+                        <span class="tool-name">{{ tool.name }}</span>
+                        <span class="tool-category">{{ tool.category }}</span>
+                    </div>
+                    <div class="tool-description">{{ tool.description }}</div>
+                    <div class="tool-features">
+                        {% for feature in tool.features[:3] %}
+                        <span class="feature-tag">{{ feature }}</span>
+                        {% endfor %}
+                    </div>
+                    <div class="tool-footer">
+                        <span class="tool-price">{{ tool.price }}</span>
+                        <div class="tool-rating">⭐ {{ tool.rating }}</div>
+                    </div>
+                </a>
+                {% endfor %}
+            </div>
+            
+            <div class="cta-section">
+                <h2>Have an AI tool to share?</h2>
+                <p>Submit your tool and reach thousands of e-commerce sellers</p>
+                <a href="mailto:submit@aiexporthub.com" class="cta-button">Submit Your Tool</a>
+            </div>
+        </div>
     </div>
 </body>
 </html>
@@ -342,38 +574,218 @@ AI_TOOL_DETAIL_TEMPLATE = '''
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{{ tool.name }} - AI Export Hub</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
-        body { font-family: Arial, sans-serif; max-width: 800px; margin: 0 auto; padding: 20px; background: #f5f7fa; }
-        .header { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 30px; border-radius: 10px; margin-bottom: 30px; }
-        .header a { color: white; text-decoration: none; }
-        .content { background: white; padding: 30px; border-radius: 10px; }
-        .tool-title { font-size: 2em; margin-bottom: 10px; }
-        .tool-category { background: #f0f0f0; padding: 5px 15px; border-radius: 20px; display: inline-block; margin-bottom: 20px; }
-        .tool-description { font-size: 1.2em; color: #555; margin-bottom: 20px; }
-        .features { list-style: none; padding: 0; }
-        .features li { padding: 10px 0; border-bottom: 1px solid #eee; }
-        .features li:before { content: "✓"; color: #4caf50; font-weight: bold; margin-right: 10px; }
-        .cta { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 30px; text-align: center; border-radius: 10px; margin-top: 30px; }
-        .cta a { background: white; color: #667eea; padding: 15px 40px; border-radius: 30px; text-decoration: none; font-weight: bold; display: inline-block; margin-top: 15px; }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { 
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif; 
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            color: #333;
+        }
+        .container { max-width: 900px; margin: 0 auto; padding: 40px 20px; }
+        .nav { 
+            background: rgba(255,255,255,0.1); 
+            backdrop-filter: blur(10px);
+            padding: 15px 30px; 
+            border-radius: 50px; 
+            display: inline-block; 
+            margin-bottom: 30px;
+        }
+        .nav a { 
+            color: white; 
+            text-decoration: none; 
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .content { 
+            background: white; 
+            border-radius: 30px; 
+            padding: 50px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+        }
+        .tool-header {
+            text-align: center;
+            padding-bottom: 40px;
+            border-bottom: 2px solid #f0f0f0;
+            margin-bottom: 40px;
+        }
+        .tool-category { 
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 8px 20px; 
+            border-radius: 25px; 
+            font-size: 0.85em; 
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            display: inline-block;
+            margin-bottom: 20px;
+        }
+        .tool-title { 
+            font-size: 3em; 
+            font-weight: 700; 
+            color: #333;
+            margin-bottom: 15px;
+        }
+        .tool-rating {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+            font-size: 1.2em;
+            color: #ffa500;
+        }
+        .tool-description { 
+            font-size: 1.3em; 
+            color: #555; 
+            line-height: 1.8;
+            text-align: center;
+            max-width: 700px;
+            margin: 30px auto;
+        }
+        .section {
+            margin: 40px 0;
+        }
+        .section-title {
+            font-size: 1.5em;
+            font-weight: 700;
+            color: #333;
+            margin-bottom: 25px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 15px;
+        }
+        .feature-item {
+            background: linear-gradient(145deg, #f8f9ff 0%, #ffffff 100%);
+            padding: 20px;
+            border-radius: 15px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            border: 1px solid rgba(102,126,234,0.1);
+        }
+        .feature-icon {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.2em;
+        }
+        .feature-text {
+            font-weight: 600;
+            color: #333;
+        }
+        .tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+        .tag {
+            background: #f0f4ff;
+            color: #667eea;
+            padding: 8px 18px;
+            border-radius: 20px;
+            font-size: 0.9em;
+            font-weight: 500;
+        }
+        .cta-section {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 50px;
+            border-radius: 25px;
+            text-align: center;
+            margin-top: 50px;
+        }
+        .price-display {
+            font-size: 3.5em;
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
+        .price-label {
+            font-size: 1.1em;
+            opacity: 0.9;
+            margin-bottom: 30px;
+        }
+        .cta-button {
+            display: inline-block;
+            background: white;
+            color: #667eea;
+            padding: 20px 60px;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 1.2em;
+            transition: all 0.3s ease;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+        .cta-button:hover {
+            transform: scale(1.05);
+            box-shadow: 0 15px 40px rgba(0,0,0,0.3);
+        }
+        @media (max-width: 768px) {
+            .tool-title { font-size: 2em; }
+            .content { padding: 30px 20px; }
+            .features-grid { grid-template-columns: 1fr; }
+        }
     </style>
 </head>
 <body>
-    <div class="header">
-        <a href="/ai-tools">← Back to AI Tools</a>
-    </div>
-    <div class="content">
-        <h1 class="tool-title">{{ tool.name }}</h1>
-        <span class="tool-category">{{ tool.category }}</span>
-        <div style="color:#ffa500;margin:15px 0;">⭐ {{ tool.rating }} ({{ tool.reviews }} reviews)</div>
-        <p class="tool-description">{{ tool.description }}</p>
-        <h3>Key Features</h3>
-        <ul class="features">
-            {% for feature in tool.features %}<li>{{ feature }}</li>{% endfor %}
-        </ul>
-        <div class="cta">
-            <div style="font-size:2em;font-weight:bold;">{{ tool.price }}</div>
-            <a href="{{ tool.website }}" target="_blank">Visit Website</a>
+    <div class="container">
+        <div class="nav">
+            <a href="/ai-tools">← Back to AI Tools</a>
+        </div>
+        
+        <div class="content">
+            <div class="tool-header">
+                <span class="tool-category">{{ tool.category }}</span>
+                <h1 class="tool-title">{{ tool.name }}</h1>
+                <div class="tool-rating">
+                    <span>⭐ {{ tool.rating }}</span>
+                    <span style="color:#999;">({{ tool.reviews }} reviews)</span>
+                </div>
+                <p class="tool-description">{{ tool.description }}</p>
+            </div>
+            
+            <div class="section">
+                <h3 class="section-title">✨ Key Features</h3>
+                <div class="features-grid">
+                    {% for feature in tool.features %}
+                    <div class="feature-item">
+                        <div class="feature-icon">✓</div>
+                        <span class="feature-text">{{ feature }}</span>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+            
+            <div class="section">
+                <h3 class="section-title">🏷️ Tags</h3>
+                <div class="tags">
+                    {% for tag in tool.tags %}
+                    <span class="tag">{{ tag }}</span>
+                    {% endfor %}
+                </div>
+            </div>
+            
+            <div class="cta-section">
+                <div class="price-display">{{ tool.price }}</div>
+                <div class="price-label">Start using {{ tool.name }} today</div>
+                <a href="{{ tool.website }}" target="_blank" class="cta-button">Visit Website →</a>
+            </div>
         </div>
     </div>
 </body>
