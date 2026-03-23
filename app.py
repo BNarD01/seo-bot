@@ -476,7 +476,8 @@ KEYWORDS: [comma-separated keywords]
 
 @app.route('/')
 def home():
-    return render_template_string(HTML_TEMPLATE, ai_tools=AI_TOOLS_DATA)
+    """AI Export Hub as homepage"""
+    return render_template_string(AI_TOOLS_HOMEPAGE_TEMPLATE, tools=AI_TOOLS_DATA, categories=AI_CATEGORIES, total_tools=len(AI_TOOLS_DATA))
 
 @app.route('/generate', methods=['POST'])
 def generate():
@@ -532,6 +533,11 @@ def cancel():
     return "<h1>Payment Cancelled</h1><p>You can try again anytime.</p><a href='/'>Go Back</a>"
 
 # AI Export Hub Routes
+@app.route('/seo-bot')
+def seo_bot_page():
+    """SEO Bot Article Generator Page"""
+    return render_template_string(SEO_BOT_TEMPLATE)
+
 @app.route('/ai-tools')
 def ai_tools_home():
     """AI Export Hub Home"""
@@ -1089,6 +1095,552 @@ AI_TOOLS_CATEGORY_TEMPLATE = '''
         </a>
         {% endfor %}
     </div>
+</body>
+</html>
+'''
+
+# AI Export Hub Homepage Template (New Main Page)
+AI_TOOLS_HOMEPAGE_TEMPLATE = '''
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Export Hub - AI Tools for Cross-border E-commerce</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { 
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif; 
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            color: #333;
+        }
+        .container { max-width: 1400px; margin: 0 auto; padding: 40px 20px; }
+        
+        /* Hero Section */
+        .hero { 
+            text-align: center; 
+            color: white; 
+            padding: 60px 20px;
+        }
+        .hero h1 { 
+            font-size: 4em; 
+            font-weight: 700; 
+            margin-bottom: 20px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+        }
+        .hero p { 
+            font-size: 1.3em; 
+            opacity: 0.9; 
+            max-width: 600px;
+            margin: 0 auto 40px;
+        }
+        .stats { 
+            display: flex; 
+            justify-content: center; 
+            gap: 60px; 
+            flex-wrap: wrap;
+        }
+        .stat { 
+            background: rgba(255,255,255,0.15);
+            backdrop-filter: blur(10px);
+            padding: 25px 50px;
+            border-radius: 20px;
+            text-align: center;
+            border: 1px solid rgba(255,255,255,0.2);
+        }
+        .stat-number { 
+            font-size: 3em; 
+            font-weight: 700; 
+            display: block;
+        }
+        .stat-label { 
+            font-size: 1em; 
+            opacity: 0.9;
+            margin-top: 5px;
+        }
+        
+        /* Content Section */
+        .content { 
+            background: white; 
+            border-radius: 30px; 
+            padding: 60px;
+            margin-top: 40px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+        }
+        .section-title { 
+            font-size: 2.2em; 
+            font-weight: 700; 
+            text-align: center; 
+            margin-bottom: 50px;
+            color: #333;
+        }
+        
+        /* Tools Grid */
+        .tools-grid { 
+            display: grid; 
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr)); 
+            gap: 30px;
+        }
+        .tool-card { 
+            background: linear-gradient(145deg, #ffffff 0%, #f8f9ff 100%);
+            padding: 35px; 
+            border-radius: 20px; 
+            box-shadow: 0 4px 20px rgba(102,126,234,0.1);
+            text-decoration: none; 
+            color: inherit;
+            transition: all 0.3s ease;
+            border: 1px solid rgba(102,126,234,0.1);
+            position: relative;
+            overflow: hidden;
+        }
+        .tool-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+            transform: scaleX(0);
+            transition: transform 0.3s ease;
+        }
+        .tool-card:hover { 
+            transform: translateY(-8px); 
+            box-shadow: 0 20px 50px rgba(102,126,234,0.2);
+        }
+        .tool-card:hover::before {
+            transform: scaleX(1);
+        }
+        .tool-card.featured {
+            border: 2px solid #667eea;
+            background: linear-gradient(145deg, #f0f4ff 0%, #ffffff 100%);
+        }
+        .tool-card.featured::after {
+            content: 'OUR PRODUCT';
+            position: absolute;
+            top: 15px;
+            right: -30px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 5px 40px;
+            font-size: 0.7em;
+            font-weight: 700;
+            transform: rotate(45deg);
+        }
+        .tool-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 15px;
+        }
+        .tool-name { 
+            font-size: 1.5em; 
+            font-weight: 700; 
+            color: #333;
+            flex: 1;
+        }
+        .tool-category { 
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 6px 14px; 
+            border-radius: 20px; 
+            font-size: 0.75em; 
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+        .tool-description { 
+            color: #666; 
+            margin: 15px 0;
+            line-height: 1.6;
+            font-size: 1em;
+        }
+        .tool-features {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin: 15px 0;
+        }
+        .feature-tag {
+            background: #f0f4ff;
+            color: #667eea;
+            padding: 5px 12px;
+            border-radius: 15px;
+            font-size: 0.8em;
+            font-weight: 500;
+        }
+        .tool-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 20px;
+            padding-top: 15px;
+            border-top: 1px solid #eee;
+        }
+        .tool-price { 
+            font-size: 1.3em;
+            font-weight: 700;
+            color: #667eea;
+        }
+        .tool-rating {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            color: #ffa500;
+            font-weight: 600;
+        }
+        
+        /* CTA Section */
+        .cta-section {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 60px;
+            border-radius: 25px;
+            text-align: center;
+            margin-top: 60px;
+        }
+        .cta-section h2 {
+            font-size: 2.5em;
+            margin-bottom: 15px;
+        }
+        .cta-section p {
+            font-size: 1.2em;
+            opacity: 0.9;
+            margin-bottom: 30px;
+        }
+        .cta-button {
+            display: inline-block;
+            background: white;
+            color: #667eea;
+            padding: 18px 50px;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 1.1em;
+            transition: all 0.3s ease;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+        .cta-button:hover {
+            transform: scale(1.05);
+            box-shadow: 0 15px 40px rgba(0,0,0,0.3);
+        }
+        
+        @media (max-width: 768px) {
+            .hero h1 { font-size: 2.5em; }
+            .stats { flex-direction: column; gap: 20px; }
+            .tools-grid { grid-template-columns: 1fr; }
+            .content { padding: 30px 20px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="hero">
+            <h1>AI Export Hub</h1>
+            <p>Discover AI-powered tools to scale your cross-border e-commerce business globally</p>
+            <div class="stats">
+                <div class="stat">
+                    <span class="stat-number">{{ total_tools }}</span>
+                    <span class="stat-label">AI Tools</span>
+                </div>
+                <div class="stat">
+                    <span class="stat-number">{{ categories|length }}</span>
+                    <span class="stat-label">Categories</span>
+                </div>
+                <div class="stat">
+                    <span class="stat-number">1000+</span>
+                    <span class="stat-label">Active Users</span>
+                </div>
+            </div>
+        </div>
+        
+        <div class="content">
+            <h2 class="section-title">Featured AI Tools</h2>
+            <div class="tools-grid">
+                {% for tool in tools %}
+                <a href="{% if tool.id == 1 %}/seo-bot{% else %}/ai-tools/tool/{{ tool.id }}{% endif %}" class="tool-card {% if tool.id == 1 %}featured{% endif %}">
+                    <div class="tool-header">
+                        <span class="tool-name">{{ tool.name }}</span>
+                        <span class="tool-category">{{ tool.category }}</span>
+                    </div>
+                    <div class="tool-description">{{ tool.description }}</div>
+                    <div class="tool-features">
+                        {% for feature in tool.features[:3] %}
+                        <span class="feature-tag">{{ feature }}</span>
+                        {% endfor %}
+                    </div>
+                    <div class="tool-footer">
+                        <span class="tool-price">{{ tool.price }}</span>
+                        <div class="tool-rating">⭐ {{ tool.rating }}</div>
+                    </div>
+                </a>
+                {% endfor %}
+            </div>
+            
+            <div class="cta-section">
+                <h2>Have an AI tool to share?</h2>
+                <p>Submit your tool and reach thousands of e-commerce sellers</p>
+                <a href="mailto:submit@aiexporthub.com" class="cta-button">Submit Your Tool</a>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
+'''
+
+# SEO Bot Article Generator Page Template
+SEO_BOT_TEMPLATE = '''
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SEO Bot - AI Article Generator</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { 
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif; 
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            color: #333;
+        }
+        .container { max-width: 900px; margin: 0 auto; padding: 40px 20px; }
+        
+        .nav { 
+            background: rgba(255,255,255,0.1); 
+            backdrop-filter: blur(10px);
+            padding: 15px 30px; 
+            border-radius: 50px; 
+            display: inline-block; 
+            margin-bottom: 30px;
+        }
+        .nav a { 
+            color: white; 
+            text-decoration: none; 
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .hero { 
+            text-align: center; 
+            color: white; 
+            padding: 40px 20px;
+        }
+        .hero h1 { 
+            font-size: 3em; 
+            font-weight: 700; 
+            margin-bottom: 15px;
+        }
+        .hero p { 
+            font-size: 1.2em; 
+            opacity: 0.9; 
+        }
+        
+        .content { 
+            background: white; 
+            border-radius: 30px; 
+            padding: 50px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+        }
+        
+        .pricing-grid { 
+            display: grid; 
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); 
+            gap: 20px; 
+            margin-bottom: 40px;
+        }
+        .pricing-card { 
+            background: linear-gradient(145deg, #f8f9ff 0%, #ffffff 100%);
+            padding: 30px; 
+            border-radius: 20px; 
+            text-align: center;
+            box-shadow: 0 4px 15px rgba(102,126,234,0.1);
+            border: 2px solid transparent;
+            transition: all 0.3s ease;
+        }
+        .pricing-card:hover { transform: translateY(-5px); box-shadow: 0 10px 30px rgba(102,126,234,0.2); }
+        .pricing-card.featured { 
+            border-color: #667eea; 
+            transform: scale(1.05);
+        }
+        .pricing-card h3 { font-size: 1.3em; margin-bottom: 10px; }
+        .pricing-card .price { 
+            font-size: 2.5em; 
+            font-weight: 700; 
+            color: #667eea;
+            margin: 15px 0;
+        }
+        .pricing-card button {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 25px;
+            font-weight: 600;
+            cursor: pointer;
+            width: 100%;
+            transition: all 0.3s ease;
+        }
+        .pricing-card button:hover { transform: scale(1.05); }
+        
+        .generator-box {
+            background: linear-gradient(145deg, #f8f9ff 0%, #ffffff 100%);
+            padding: 40px;
+            border-radius: 20px;
+            margin-top: 30px;
+        }
+        .form-group { margin-bottom: 25px; }
+        .form-group label { display: block; margin-bottom: 10px; font-weight: 600; color: #333; }
+        .form-group input, .form-group select {
+            width: 100%;
+            padding: 15px 20px;
+            border: 2px solid #e0e0e0;
+            border-radius: 12px;
+            font-size: 1em;
+            transition: border-color 0.3s;
+        }
+        .form-group input:focus, .form-group select:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+        .generate-btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 18px 50px;
+            border-radius: 30px;
+            font-size: 1.1em;
+            font-weight: 700;
+            cursor: pointer;
+            width: 100%;
+            transition: all 0.3s ease;
+        }
+        .generate-btn:hover { transform: scale(1.02); box-shadow: 0 10px 30px rgba(102,126,234,0.4); }
+        
+        .result-box {
+            margin-top: 30px;
+            padding: 30px;
+            background: white;
+            border-radius: 15px;
+            border-left: 4px solid #667eea;
+            display: none;
+        }
+        .result-box.show { display: block; }
+        .article { white-space: pre-wrap; line-height: 1.8; }
+        
+        .tools-links { display: flex; justify-content: center; gap: 20px; flex-wrap: wrap; margin-bottom: 30px; }
+        .tools-links a {
+            padding: 12px 25px;
+            background: white;
+            border-radius: 25px;
+            text-decoration: none;
+            color: #667eea;
+            font-weight: 600;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+        
+        @media (max-width: 768px) {
+            .hero h1 { font-size: 2em; }
+            .content { padding: 30px 20px; }
+            .pricing-card.featured { transform: scale(1); }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="nav">
+            <a href="/">← Back to AI Export Hub</a>
+        </div>
+        
+        <div class="hero">
+            <h1>SEO Bot</h1>
+            <p>AI-powered SEO article generator. Rank higher in minutes.</p>
+        </div>
+        
+        <div class="content">
+            <div class="pricing-grid">
+                <div class="pricing-card">
+                    <h3>Starter</h3>
+                    <div class="price">$29/mo</div>
+                    <p>10 articles/month</p>
+                    <button onclick="window.location.href='/checkout?plan=starter'">Get Started</button>
+                </div>
+                <div class="pricing-card featured">
+                    <h3>Pro</h3>
+                    <div class="price">$79/mo</div>
+                    <p>50 articles/month</p>
+                    <button onclick="window.location.href='/checkout?plan=pro'">Most Popular</button>
+                </div>
+                <div class="pricing-card">
+                    <h3>Enterprise</h3>
+                    <div class="price">$199/mo</div>
+                    <p>Unlimited articles</p>
+                    <button onclick="window.location.href='/checkout?plan=enterprise'">Contact Us</button>
+                </div>
+            </div>
+            
+            <div class="tools-links">
+                <a href="/keyword">🔍 Keyword Research</a>
+                <a href="/competitor">📊 Competitor Analysis</a>
+            </div>
+            
+            <div class="generator-box">
+                <h2 style="text-align: center; margin-bottom: 30px;">Try Free - Generate Article</h2>
+                <form id="generateForm">
+                    <div class="form-group">
+                        <label>Keyword / Topic:</label>
+                        <input type="text" id="keyword" placeholder="e.g., best coffee maker 2025" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Article Length:</label>
+                        <select id="length">
+                            <option value="short">Short (500 words)</option>
+                            <option value="medium" selected>Medium (1000 words)</option>
+                            <option value="long">Long (2000 words)</option>
+                        </select>
+                    </div>
+                    <button type="submit" class="generate-btn">Generate Article</button>
+                </form>
+                <div id="result" class="result-box"></div>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        document.getElementById('generateForm').onsubmit = async (e) => {
+            e.preventDefault();
+            const btn = document.querySelector('.generate-btn');
+            btn.textContent = 'Generating...';
+            
+            const res = await fetch('/generate', {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({
+                    keyword: document.getElementById('keyword').value,
+                    length: document.getElementById('length').value
+                })
+            });
+            
+            const data = await res.json();
+            const resultDiv = document.getElementById('result');
+            resultDiv.style.display = 'block';
+            
+            if (data.error) {
+                resultDiv.innerHTML = `<div style="color:red;font-weight:bold;">Error: ${data.error}</div>`;
+            } else {
+                resultDiv.innerHTML = `
+                    <h3>${data.title}</h3>
+                    <div class="article">${data.content}</div>
+                    <p style="color:green;font-weight:bold;margin-top:20px;">Word count: ${data.word_count}</p>
+                `;
+            }
+            btn.textContent = 'Generate Article';
+        };
+    </script>
 </body>
 </html>
 '''
