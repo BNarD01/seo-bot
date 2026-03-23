@@ -1299,6 +1299,34 @@ AI_TOOLS_HOMEPAGE_TEMPLATE = '''
             font-weight: 600;
         }
         
+        /* Promo Banner */
+        .promo-banner {
+            background: linear-gradient(135deg, #ff6b6b 0%, #ee5a5a 100%);
+            color: white;
+            padding: 20px;
+            text-align: center;
+            font-weight: 600;
+            font-size: 1.1em;
+            animation: pulse 2s infinite;
+        }
+        .promo-banner strong {
+            font-size: 1.3em;
+            display: block;
+            margin-bottom: 5px;
+        }
+        .promo-code {
+            background: white;
+            color: #ff6b6b;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-weight: 700;
+            margin-left: 10px;
+        }
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.02); }
+        }
+        
         /* CTA Section */
         .cta-section {
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
@@ -1361,6 +1389,11 @@ AI_TOOLS_HOMEPAGE_TEMPLATE = '''
                     <span class="stat-label">Active Users</span>
                 </div>
             </div>
+        </div>
+        
+        <div class="promo-banner">
+            <strong>🔥 LAUNCH SPECIAL: 50% OFF First Month!</strong>
+            Use code <span class="promo-code">LAUNCH50</span> at checkout • Limited time offer
         </div>
         
         <div class="content">
