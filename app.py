@@ -47,79 +47,347 @@ GOOGLE_TAG = """
 </script>
 """
 
-# HTML Template
+# HTML Template - Combined SEO Bot + AI Export Hub
 HTML_TEMPLATE = """
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>SEO Bot - AI Article Generator</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SEO Bot + AI Export Hub - AI Tools for E-commerce</title>
     """ + GOOGLE_TAG + """
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
-    <style>
-        body { font-family: Arial, sans-serif; max-width: 900px; margin: 50px auto; padding: 20px; background: #f5f5f5; }
-        h1 { color: #333; text-align: center; }
-        .pricing { display: flex; gap: 20px; margin: 30px 0; flex-wrap: wrap; }
-        .plan { flex: 1; min-width: 250px; padding: 20px; border: 2px solid #ddd; border-radius: 10px; text-align: center; background: white; }
-        .plan.featured { border-color: #007bff; transform: scale(1.05); }
-        .price { font-size: 2.5em; color: #007bff; font-weight: bold; }
-        button { background: #007bff; color: white; padding: 15px 30px; border: none; border-radius: 5px; cursor: pointer; font-size: 16px; margin: 10px; }
-        button:hover { background: #0056b3; }
-        .form-group { margin: 20px 0; }
-        label { display: block; margin-bottom: 5px; font-weight: bold; }
-        input, textarea, select { width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 5px; font-size: 14px; }
-        .result { margin-top: 30px; padding: 20px; background: white; border-radius: 5px; border-left: 4px solid #007bff; }
-        .article { white-space: pre-wrap; line-height: 1.6; }
-        .success { color: green; font-weight: bold; }
-        .error { color: red; font-weight: bold; }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif; background: #f8f9fa; color: #333; }
+        .container { max-width: 1400px; margin: 0 auto; padding: 0 20px; }
+        
+        /* Hero Section */
+        .hero { 
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); 
+            color: white; 
+            padding: 80px 20px;
+            text-align: center;
+        }
+        .hero h1 { font-size: 3.5em; font-weight: 700; margin-bottom: 20px; }
+        .hero p { font-size: 1.3em; opacity: 0.9; max-width: 600px; margin: 0 auto 30px; }
+        .hero-badges { display: flex; justify-content: center; gap: 30px; flex-wrap: wrap; margin-top: 40px; }
+        .hero-badge { 
+            background: rgba(255,255,255,0.15); 
+            backdrop-filter: blur(10px);
+            padding: 20px 40px; 
+            border-radius: 15px;
+            border: 1px solid rgba(255,255,255,0.2);
+        }
+        .hero-badge-number { font-size: 2.5em; font-weight: 700; display: block; }
+        .hero-badge-label { font-size: 0.95em; opacity: 0.9; }
+        
+        /* Section Styles */
+        .section { padding: 60px 0; }
+        .section-title { 
+            font-size: 2.2em; 
+            font-weight: 700; 
+            text-align: center; 
+            margin-bottom: 50px;
+            color: #333;
+        }
+        .section-subtitle {
+            text-align: center;
+            color: #666;
+            font-size: 1.1em;
+            margin-top: -40px;
+            margin-bottom: 50px;
+        }
+        
+        /* Pricing */
+        .pricing-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 25px; max-width: 1000px; margin: 0 auto; }
+        .pricing-card { 
+            background: white; 
+            padding: 40px 30px; 
+            border-radius: 20px; 
+            text-align: center;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+        }
+        .pricing-card:hover { transform: translateY(-5px); box-shadow: 0 10px 40px rgba(0,0,0,0.12); }
+        .pricing-card.featured { 
+            border-color: #667eea; 
+            transform: scale(1.05);
+            position: relative;
+        }
+        .pricing-card.featured::before {
+            content: 'MOST POPULAR';
+            position: absolute;
+            top: -12px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 5px 20px;
+            border-radius: 20px;
+            font-size: 0.75em;
+            font-weight: 700;
+        }
+        .pricing-card h3 { font-size: 1.5em; margin-bottom: 15px; }
+        .pricing-card .price { 
+            font-size: 3em; 
+            font-weight: 700; 
+            color: #667eea;
+            margin: 20px 0;
+        }
+        .pricing-card button {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 15px 40px;
+            border-radius: 30px;
+            font-size: 1em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            width: 100%;
+        }
+        .pricing-card button:hover { transform: scale(1.05); box-shadow: 0 5px 20px rgba(102,126,234,0.4); }
+        
+        /* AI Tools Section */
+        .ai-tools-section { background: linear-gradient(135deg, #f8f9ff 0%, #fff 100%); }
+        .tools-grid { 
+            display: grid; 
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr)); 
+            gap: 25px;
+        }
+        .tool-card { 
+            background: white; 
+            padding: 30px; 
+            border-radius: 20px; 
+            box-shadow: 0 4px 15px rgba(102,126,234,0.08);
+            text-decoration: none; 
+            color: inherit;
+            transition: all 0.3s ease;
+            border: 1px solid rgba(102,126,234,0.1);
+        }
+        .tool-card:hover { 
+            transform: translateY(-8px); 
+            box-shadow: 0 20px 40px rgba(102,126,234,0.15);
+            border-color: rgba(102,126,234,0.3);
+        }
+        .tool-card-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 15px; }
+        .tool-card-name { font-size: 1.3em; font-weight: 700; color: #333; }
+        .tool-card-category { 
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 5px 12px;
+            border-radius: 15px;
+            font-size: 0.7em;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+        .tool-card-desc { color: #666; margin-bottom: 15px; line-height: 1.5; }
+        .tool-card-footer { display: flex; justify-content: space-between; align-items: center; margin-top: 15px; }
+        .tool-card-price { color: #667eea; font-weight: 700; font-size: 1.1em; }
+        .tool-card-rating { color: #ffa500; font-weight: 600; }
+        
+        /* Generator Section */
+        .generator-section { background: white; }
+        .generator-box {
+            max-width: 700px;
+            margin: 0 auto;
+            background: linear-gradient(145deg, #f8f9ff 0%, #ffffff 100%);
+            padding: 50px;
+            border-radius: 25px;
+            box-shadow: 0 10px 40px rgba(102,126,234,0.1);
+        }
+        .form-group { margin-bottom: 25px; }
+        .form-group label { display: block; margin-bottom: 10px; font-weight: 600; color: #333; }
+        .form-group input, .form-group select {
+            width: 100%;
+            padding: 15px 20px;
+            border: 2px solid #e0e0e0;
+            border-radius: 12px;
+            font-size: 1em;
+            transition: border-color 0.3s;
+        }
+        .form-group input:focus, .form-group select:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+        .generate-btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 18px 50px;
+            border-radius: 30px;
+            font-size: 1.1em;
+            font-weight: 700;
+            cursor: pointer;
+            width: 100%;
+            transition: all 0.3s ease;
+        }
+        .generate-btn:hover { transform: scale(1.02); box-shadow: 0 10px 30px rgba(102,126,234,0.4); }
+        
+        /* Tools Links */
+        .tools-links { display: flex; justify-content: center; gap: 30px; flex-wrap: wrap; margin: 40px 0; }
+        .tools-links a {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 15px 30px;
+            background: white;
+            border-radius: 12px;
+            text-decoration: none;
+            color: #333;
+            font-weight: 600;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+            transition: all 0.3s ease;
+        }
+        .tools-links a:hover { transform: translateY(-3px); box-shadow: 0 8px 25px rgba(0,0,0,0.12); }
+        .tools-links a.keyword { color: #007bff; }
+        .tools-links a.competitor { color: #28a745; }
+        
+        /* Result */
+        .result-box {
+            margin-top: 30px;
+            padding: 30px;
+            background: white;
+            border-radius: 15px;
+            border-left: 4px solid #667eea;
+            display: none;
+        }
+        .result-box.show { display: block; }
+        
+        /* Footer */
+        .footer {
+            background: #333;
+            color: white;
+            padding: 40px 20px;
+            text-align: center;
+        }
+        
+        @media (max-width: 768px) {
+            .hero h1 { font-size: 2.2em; }
+            .hero-badges { flex-direction: column; align-items: center; }
+            .pricing-card.featured { transform: scale(1); }
+            .tools-grid { grid-template-columns: 1fr; }
+            .generator-box { padding: 30px 20px; }
+        }
     </style>
 </head>
 <body>
-    <h1>SEO Bot</h1>
-    <p style="text-align: center; font-size: 18px; color: #666;">AI-powered SEO article generator. Rank higher in minutes.</p>
-    
-    <div class="pricing">
-        <div class="plan">
-            <h3>Starter</h3>
-            <div class="price">$29/mo</div>
-            <p>10 articles/month</p>
-            <button onclick="window.location.href='/checkout?plan=starter'">Get Started</button>
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="container">
+            <h1>SEO Bot + AI Export Hub</h1>
+            <p>All-in-one AI toolkit for cross-border e-commerce. Generate SEO content and discover AI tools to scale your business.</p>
+            <div class="hero-badges">
+                <div class="hero-badge">
+                    <span class="hero-badge-number">8</span>
+                    <span class="hero-badge-label">AI Tools</span>
+                </div>
+                <div class="hero-badge">
+                    <span class="hero-badge-number">3</span>
+                    <span class="hero-badge-label">SEO Tools</span>
+                </div>
+                <div class="hero-badge">
+                    <span class="hero-badge-number">1000+</span>
+                    <span class="hero-badge-label">Active Users</span>
+                </div>
+            </div>
         </div>
-        <div class="plan featured">
-            <h3>Pro</h3>
-            <div class="price">$79/mo</div>
-            <p>50 articles/month</p>
-            <button onclick="window.location.href='/checkout?plan=pro'">Most Popular</button>
+    </section>
+
+    <!-- Pricing Section -->
+    <section class="section">
+        <div class="container">
+            <h2 class="section-title">Choose Your Plan</h2>
+            <p class="section-subtitle">Start generating SEO-optimized articles in minutes</p>
+            <div class="pricing-grid">
+                <div class="pricing-card">
+                    <h3>Starter</h3>
+                    <div class="price">$29/mo</div>
+                    <p>10 articles/month</p>
+                    <button onclick="window.location.href='/checkout?plan=starter'">Get Started</button>
+                </div>
+                <div class="pricing-card featured">
+                    <h3>Pro</h3>
+                    <div class="price">$79/mo</div>
+                    <p>50 articles/month</p>
+                    <button onclick="window.location.href='/checkout?plan=pro'">Most Popular</button>
+                </div>
+                <div class="pricing-card">
+                    <h3>Enterprise</h3>
+                    <div class="price">$199/mo</div>
+                    <p>Unlimited articles</p>
+                    <button onclick="window.location.href='/checkout?plan=enterprise'">Contact Us</button>
+                </div>
+            </div>
         </div>
-        <div class="plan">
-            <h3>Enterprise</h3>
-            <div class="price">$199/mo</div>
-            <p>Unlimited articles</p>
-            <button onclick="window.location.href='/checkout?plan=enterprise'">Contact Us</button>
+    </section>
+
+    <!-- AI Tools Section -->
+    <section class="section ai-tools-section">
+        <div class="container">
+            <h2 class="section-title">Featured AI Tools</h2>
+            <p class="section-subtitle">Discover AI-powered tools to boost your e-commerce business</p>
+            <div class="tools-grid">
+                {% for tool in ai_tools[:6] %}
+                <a href="/ai-tools/tool/{{ tool.id }}" class="tool-card">
+                    <div class="tool-card-header">
+                        <span class="tool-card-name">{{ tool.name }}</span>
+                        <span class="tool-card-category">{{ tool.category }}</span>
+                    </div>
+                    <div class="tool-card-desc">{{ tool.description }}</div>
+                    <div class="tool-card-footer">
+                        <span class="tool-card-price">{{ tool.price }}</span>
+                        <span class="tool-card-rating">⭐ {{ tool.rating }}</span>
+                    </div>
+                </a>
+                {% endfor %}
+            </div>
+            <div style="text-align: center; margin-top: 40px;">
+                <a href="/ai-tools" style="display: inline-block; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 15px 40px; border-radius: 30px; text-decoration: none; font-weight: 600;">View All 8 AI Tools →</a>
+            </div>
         </div>
-    </div>
-    
-    <h2 style="text-align: center; margin-top: 40px;"><a href="/keyword" style="color: #007bff;">Try Keyword Research Tool</a></h2>
-    <h2 style="text-align: center; margin-top: 20px;"><a href="/competitor" style="color: #28a745;">Try Competitor Analysis</a></h2>
-    <h2 style="text-align: center; margin-top: 20px;"><a href="/ai-tools" style="color: #764ba2;">🚀 Explore AI Export Hub (8 AI Tools)</a></h2>
-    
-    <h2 style="text-align: center; margin-top: 40px;">Try Free - Generate Article</h2>
-    <form id="generateForm">
-        <div class="form-group">
-            <label>Keyword / Topic:</label>
-            <input type="text" id="keyword" placeholder="e.g., best coffee maker 2025" required>
+    </section>
+
+    <!-- Generator Section -->
+    <section class="section generator-section">
+        <div class="container">
+            <h2 class="section-title">Try Free - Generate Article</h2>
+            <p class="section-subtitle">Enter a keyword and get an SEO-optimized article instantly</p>
+            
+            <div class="tools-links">
+                <a href="/keyword" class="keyword">🔍 Keyword Research Tool</a>
+                <a href="/competitor" class="competitor">📊 Competitor Analysis</a>
+            </div>
+            
+            <div class="generator-box">
+                <form id="generateForm">
+                    <div class="form-group">
+                        <label>Keyword / Topic:</label>
+                        <input type="text" id="keyword" placeholder="e.g., best coffee maker 2025" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Article Length:</label>
+                        <select id="length">
+                            <option value="short">Short (500 words)</option>
+                            <option value="medium" selected>Medium (1000 words)</option>
+                            <option value="long">Long (2000 words)</option>
+                        </select>
+                    </div>
+                    <button type="submit" class="generate-btn">Generate Article</button>
+                </form>
+                <div id="result" class="result-box"></div>
+            </div>
         </div>
-        <div class="form-group">
-            <label>Article Length:</label>
-            <select id="length">
-                <option value="short">Short (500 words)</option>
-                <option value="medium" selected>Medium (1000 words)</option>
-                <option value="long">Long (2000 words)</option>
-            </select>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <p>© 2025 SEO Bot + AI Export Hub. Empowering e-commerce sellers worldwide.</p>
         </div>
-        <button type="submit">Generate Article</button>
-    </form>
-    
-    <div id="result" style="display:none;"></div>
+    </footer>
     
     <script>
         document.getElementById('generateForm').onsubmit = async (e) => {
@@ -208,7 +476,7 @@ KEYWORDS: [comma-separated keywords]
 
 @app.route('/')
 def home():
-    return render_template_string(HTML_TEMPLATE)
+    return render_template_string(HTML_TEMPLATE, ai_tools=AI_TOOLS_DATA)
 
 @app.route('/generate', methods=['POST'])
 def generate():
