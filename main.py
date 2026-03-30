@@ -185,18 +185,125 @@ def seo_bot():
     <title>SEO Bot - AI Article Writer | AI Export Hub</title>
     <meta name="description" content="Write SEO-optimized articles in 3 minutes with AI. Free trial available.">
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <script src="https://js.stripe.com/v3/"></script>
 </head>
 <body class="bg-gray-50">
+    <nav class="bg-white shadow-lg">
+        <div class="container mx-auto px-6 py-4">
+            <a href="/" class="text-2xl font-bold text-blue-600">AI Export Hub</a>
+        </div>
+    </nav>
+    
     <div class="container mx-auto px-6 py-12">
         <h1 class="text-4xl font-bold text-center mb-8">SEO Bot</h1>
         <p class="text-center text-gray-600 mb-8">Write SEO-optimized articles in 3 minutes</p>
+        
         <div class="max-w-2xl mx-auto bg-white p-8 rounded-lg shadow">
-            <p class="text-center">AI-powered content generation coming soon!</p>
-            <p class="text-center mt-4">Use code <strong>LAUNCH50</strong> for 50% off</p>
+            <div class="mb-6">
+                <label class="block text-gray-700 mb-2">Enter your keyword:</label>
+                <input type="text" id="keyword" class="w-full px-4 py-2 border rounded-lg" placeholder="e.g., SEO tips for ecommerce">
+            </div>
+            
+            <button onclick="generateArticle()" class="w-full bg-blue-600 text-white py-3 rounded-lg font-bold hover:bg-blue-700 mb-4">
+                Generate Article (Free Trial)
+            </button>
+            
+            <button onclick="subscribe()" class="w-full bg-green-600 text-white py-3 rounded-lg font-bold hover:bg-green-700">
+                Subscribe $29/month - 50% OFF: LAUNCH50
+            </button>
+            
+            <div id="result" class="mt-6 hidden">
+                <h3 class="font-bold mb-2">Generated Article:</h3>
+                <div id="article-content" class="bg-gray-100 p-4 rounded-lg whitespace-pre-wrap"></div>
+            </div>
         </div>
+    </div>
+    
+    <script>
+        async function generateArticle() {
+            const keyword = document.getElementById('keyword').value;
+            if (!keyword) {
+                alert('Please enter a keyword');
+                return;
+            }
+            
+            document.getElementById('result').classList.remove('hidden');
+            document.getElementById('article-content').textContent = 'Generating...';
+            
+            try {
+                const response = await fetch('/api/generate', {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify({keyword: keyword})
+                });
+                
+                const data = await response.json();
+                document.getElementById('article-content').textContent = data.article || data.error;
+            } catch (error) {
+                document.getElementById('article-content').textContent = 'Error: ' + error.message;
+            }
+        }
+        
+        async function subscribe() {
+            try {
+                const response = await fetch('/api/create-checkout', {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'}
+                });
+                
+                const data = await response.json();
+                if (data.id) {
+                    const stripe = Stripe('pk_live_51TCig7C7tevG1nvcxpfG6');
+                    stripe.redirectToCheckout({sessionId: data.id});
+                }
+            } catch (error) {
+                alert('Error: ' + error.message);
+            }
+        }
+    </script>
+</body>
+</html>'''
+
     </div>
 </body>
 </html>'''
+# API: Generate article
+@app.route('/api/generate', methods=['POST'])
+def generate_article():
+    data = request.json
+    keyword = data.get('keyword', '')
+    if not keyword:
+        return jsonify({'error': 'Keyword required'}), 400
+    try:
+        response = requests.post(
+            'https://openrouter.ai/api/v1/chat/completions',
+            headers={'Authorization': f'Bearer {OPENROUTER_API_KEY}', 'Content-Type': 'application/json'},
+            json={'model': 'anthropic/claude-3.5-sonnet', 'messages': [
+                {'role': 'system', 'content': 'You are an SEO expert.'},
+                {'role': 'user', 'content': f'Write SEO article about: {keyword}'}
+            ]},
+            timeout=60
+        )
+        result = response.json()
+        article = result['choices'][0]['message']['content']
+        return jsonify({'article': article, 'keyword': keyword})
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
+
+# API: Stripe checkout
+@app.route('/api/create-checkout', methods=['POST'])
+def create_checkout():
+    try:
+        session = stripe.checkout.Session.create(
+            payment_method_types=['card'],
+            line_items=[{'price_data': {'currency': 'usd', 'product_data': {'name': 'AI Export Hub'}, 'unit_amount': 2900}, 'quantity': 1}],
+            mode='subscription',
+            success_url='https://seo-bot-qrk9.onrender.com/success',
+            cancel_url='https://seo-bot-qrk9.onrender.com/seo-bot',
+        )
+        return jsonify({'id': session.id})
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=int(os.environ.get('PORT', 5000)))
