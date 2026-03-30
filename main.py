@@ -177,7 +177,7 @@ def blog_content():
 # SEO Bot tool page
 @app.route('/seo-bot')
 def seo_bot():
-return '''<!DOCTYPE html>
+    return '''<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
