@@ -263,10 +263,6 @@ def seo_bot():
     </script>
 </body>
 </html>'''
-
-    </div>
-</body>
-</html>'''
 # API: Generate article
 @app.route('/api/generate', methods=['POST'])
 def generate_article():
