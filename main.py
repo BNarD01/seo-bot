@@ -1,10 +1,13 @@
 from flask import Flask, request, jsonify
 import requests
 import os
+import stripe
 
 app = Flask(__name__)
 
 OPENROUTER_API_KEY = os.environ.get('OPENROUTER_API_KEY', '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')
+STRIPE_PK = os.environ.get('STRIPE_PK', '')
+stripe.api_key = os.environ.get('STRIPE_SK', '')
 
 TOOLS = [
     {"id":1,"name":"SEO Bot","category":"AI Marketing","description":"AI-powered SEO article generator. Rank higher in minutes.","price":"$29/mo","rating":4.8,"reviews":128,"link":"https://seo-bot-qrk9.onrender.com/seo-bot"},
@@ -138,11 +141,21 @@ button:disabled{background:#aaa;cursor:not-allowed}
 <input id="kw" placeholder="Enter keyword, e.g. bluetooth headphones review">
 <button onclick="gen()" id="btn">Generate</button>
 </div>
+<button onclick="subscribe()" style="width:100%;padding:12px;background:#22c55e;color:white;border:none;border-radius:8px;font-size:1em;cursor:pointer;margin-bottom:15px;font-weight:bold">Subscribe $29/mo &mdash; 50% OFF: LAUNCH50</button>
 <div id="status"></div>
 <div id="result"></div>
 </div>
 </div>
+<script src="https://js.stripe.com/v3/"></script>
 <script>
+const stripe = Stripe('STRIPE_PK_HERE');
+async function subscribe(){
+try{
+const r=await fetch('/api/create-checkout',{method:'POST',headers:{'Content-Type':'application/json'}});
+const d=await r.json();
+if(d.url){window.location.href=d.url;}else{alert('Error: '+(d.error||'Unknown'));}
+}catch(e){alert('Error: '+e.message);}
+}
 async function gen(){
 const k=document.getElementById('kw').value.trim();
 if(!k){alert('Please enter a keyword');return;}
@@ -197,7 +210,7 @@ def home():
 
 @app.route('/seo-bot')
 def seo_bot():
-    return SEO_HTML
+    return SEO_HTML.replace('STRIPE_PK_HERE', STRIPE_PK)
 
 
 @app.route('/api/generate', methods=['POST'])
@@ -217,6 +230,31 @@ def generate():
         return jsonify({'article': result['choices'][0]['message']['content']})
     except Exception as e:
         return jsonify({'error': str(e)}), 500
+
+
+@app.route('/api/create-checkout', methods=['POST'])
+def create_checkout():
+    try:
+        session = stripe.checkout.Session.create(
+            payment_method_types=['card'],
+            line_items=[{'price_data': {
+                'currency': 'usd',
+                'product_data': {'name': 'AI Export Hub - SEO Bot'},
+                'unit_amount': 2900,
+                'recurring': {'interval': 'month'},
+            }, 'quantity': 1}],
+            mode='subscription',
+            success_url='https://seo-bot-qrk9.onrender.com/success',
+            cancel_url='https://seo-bot-qrk9.onrender.com/seo-bot',
+        )
+        return jsonify({'url': session.url})
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
+
+
+@app.route('/success')
+def success():
+    return '<h1 style="font-family:sans-serif;text-align:center;margin-top:100px;color:#22c55e">Payment Successful! Welcome to AI Export Hub 🎉</h1><p style="text-align:center"><a href="/seo-bot">Start using SEO Bot →</a></p>'
 
 
 if __name__ == '__main__':
