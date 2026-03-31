@@ -5,7 +5,7 @@ import stripe
 
 app = Flask(__name__)
 
-OPENROUTER_API_KEY = os.environ.get('OPENROUTER_API_KEY', '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')
+OPENROUTER_API_KEY = os.environ.get('OPENAI_API_KEY', os.environ.get('OPENROUTER_API_KEY', ''))
 STRIPE_PK = 'pk_live_51TCig7C7tevG1nvcIPvbbY4guCU62B7KGqBnjbj3MiOkvPu2NDNOeJwssoQTX4YxHoRaOfJMj7WVuJM3MNll4Siu00rUtVgd7w'
 stripe.api_key = os.environ.get('STRIPE_API_KEY', '')
 
@@ -220,13 +220,15 @@ def generate():
     if not keyword:
         return jsonify({'error': 'Keyword required'}), 400
     try:
-        res = requests.post('https://openrouter.ai/api/v1/chat/completions',
+        res = requests.post('https://api.openai.com/v1/chat/completions',
             headers={'Authorization': f'Bearer {OPENROUTER_API_KEY}', 'Content-Type': 'application/json'},
-            json={'model': 'anthropic/claude-3.5-sonnet', 'messages': [
+            json={'model': 'gpt-3.5-turbo', 'messages': [
                 {'role': 'system', 'content': 'You are an SEO expert. Write detailed, well-structured SEO articles.'},
                 {'role': 'user', 'content': f'Write a comprehensive SEO article about: {keyword}'}
             ]}, timeout=60)
         result = res.json()
+        if 'choices' not in result:
+            return jsonify({'error': result.get('error', {}).get('message', str(result))}), 500
         return jsonify({'article': result['choices'][0]['message']['content']})
     except Exception as e:
         return jsonify({'error': str(e)}), 500
