@@ -6,8 +6,8 @@ import stripe
 app = Flask(__name__)
 
 OPENROUTER_API_KEY = os.environ.get('OPENROUTER_API_KEY', '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')
-STRIPE_PK = os.environ.get('STRIPE_PK', '')
-stripe.api_key = os.environ.get('STRIPE_SK', '')
+STRIPE_PK = 'pk_live_51TCig7C7tevG1nvcIPvbbY4guCU62B7KGqBnjbj3MiOkvPu2NDNOeJwssoQTX4YxHoRaOfJMj7WVuJM3MNll4Siu00rUtVgd7w'
+stripe.api_key = os.environ.get('STRIPE_API_KEY', '')
 
 TOOLS = [
     {"id":1,"name":"SEO Bot","category":"AI Marketing","description":"AI-powered SEO article generator. Rank higher in minutes.","price":"$29/mo","rating":4.8,"reviews":128,"link":"https://seo-bot-qrk9.onrender.com/seo-bot"},
